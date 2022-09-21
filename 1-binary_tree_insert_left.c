@@ -21,15 +21,11 @@ binary_tree_t *binary_tree_insert_left(binary_tree_t *parent, int value)
 	newNode->left = NULL;
 	newNode->right = NULL;
 	newNode->n = value;
-	if (parent->left != NULL)
+	if (!parent->left)
 	{
-		printf("was here\n");
 		temp = parent->left;
-		printf("nothing happened 1\n");
 		parent->left = newNode;
-		printf("no p here too 2\n");
 		newNode->left = temp;
-		printf("no p 3\n");
 		return (newNode);
 	}
 	parent->left = newNode;
