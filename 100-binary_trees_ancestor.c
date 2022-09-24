@@ -4,7 +4,7 @@
  * binary_trees_ancestor - the lowest common acestor
  * @first: the first node
  * @second: the second node
- * Return: the balance factor
+ * Return: the lowest common ancestor
  */
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 				     const binary_tree_t *second)
