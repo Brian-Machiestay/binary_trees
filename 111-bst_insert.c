@@ -1,30 +1,32 @@
 #include "binary_trees.h"
-bst_t *insert(bst_t **tree, bst_t *parent, int value);
+bst_t *insert(bst_t **tree, binary_tree_t *parent, binary_tree_t *newNode);
 /**
  * insert - inserts a node into a bst
  * @tree: the root node
- * @value: the value of the node to insert
+ * @newNode: the newNode to insert
  * @parent: the parent of this node
  * Return: the node inserted
  */
-bst_t *insert(bst_t **tree, binary_tree_t *parent, int value)
+bst_t *insert(bst_t **tree, binary_tree_t *parent, binary_tree_t *newNode)
 {
+	if (!tree)
+		return (NULL);
 	if (!*tree)
 	{
-		return (*tree = binary_tree_node(parent, value));
+		newNode->parent = parent;
+		return (newNode);
 	}
-	if (value < (*tree)->n)
-	{
-		((*tree)->left = insert(&((*tree)->left),
-					(binary_tree_t *)*tree, value));
-	}
-	else if (value > (*tree)->n)
-	{
-		((*tree)->right = insert(&((*tree)->right),
-					 (binary_tree_t *)*tree, value));
-	}
+	if (newNode->n < (*tree)->n)
+		(*tree)->left = insert(&((*tree)->left),
+				       (binary_tree_t *)*tree, newNode);
+	else if (newNode->n > (*tree)->n)
+		(*tree)->right = insert(&((*tree)->right),
+					(binary_tree_t *)*tree, newNode);
+	else if (newNode->n == (*tree)->n)
+		newNode->parent = newNode;
 	return (*tree);
 }
+
 /**
  * bst_insert - inserts a node into a bst
  * @tree: the root node
@@ -33,7 +35,17 @@ bst_t *insert(bst_t **tree, binary_tree_t *parent, int value)
  */
 bst_t *bst_insert(bst_t **tree, int value)
 {
+	binary_tree_t *newNode;
+
+	newNode = binary_tree_node(NULL, value);
 	if (!*tree)
-		return (*tree = binary_tree_node(NULL, value));
-	return (insert(tree, NULL, value));
+		return (*tree = newNode);
+
+	insert(tree, NULL, newNode);
+	if (newNode->parent == newNode)
+	{
+		free(newNode);
+		return (NULL);
+	}
+	return ((bst_t *)newNode);
 }
